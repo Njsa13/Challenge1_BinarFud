@@ -13,6 +13,7 @@ public class Menu {
     SetQuery setQuery = new SetQuery();
     Scanner input = new Scanner(System.in);
 
+    //Method  main menu
     public Integer mainMenu() {
         List<String> makanan = setQuery.getMenuData("nama_makanan");
         List<String > harga = setQuery.getMenuData("harga");
@@ -21,7 +22,7 @@ public class Menu {
         System.out.println("| Welcome To BinarFud |");
         System.out.println("+=====================+\n");
         System.out.println("Silahkan pilih menu :");
-        for (int i = 0; i < makanan.size(); i++) {
+        for (int i = 0; i < makanan.size(); i++) {      //menampilkan menu dan harga
             System.out.print((i+1)+". "+makanan.get(i)+" -----> ");
             System.out.println("Rp "+String.format("%,d",Integer.parseInt(harga.get(i))).replace(",","."));
         }
@@ -33,6 +34,7 @@ public class Menu {
         return pilihan;
     }
 
+    //Method  menu login dan daftar
     public Integer loginMenu() {
         Scanner input = new Scanner(System.in);
         System.out.println("+=====================+");
@@ -48,6 +50,7 @@ public class Menu {
         return pilihan;
     }
 
+    //method login
     public String login() {
         System.out.println("+=======+");
         System.out.println("| Login |");
@@ -64,6 +67,7 @@ public class Menu {
         }
     }
 
+    //method daftar
     public Boolean daftar() {
         System.out.println("+=======+");
         System.out.println("| Daftar |");
@@ -84,6 +88,7 @@ public class Menu {
         }
     }
 
+    //method tambah pesanan (untnuk menentukan jumlah menu yang dipesan)
     public Boolean tambahPesanan(String username, int idMakanan) {
         String makanan = setQuery.getMenuData("nama_makanan", idMakanan);
         int harga = Integer.parseInt(setQuery.getMenuData("harga", idMakanan));
@@ -105,6 +110,7 @@ public class Menu {
         }
     }
 
+    //Menu konfirmasi dan pembayaran
     public Integer konfirPemb(String username) {
         List<String> makanan = setQuery.getDetailOrder("nama_makanan", username);
         List<String > jumlah = setQuery.getDetailOrder("jumlah", username);
@@ -137,6 +143,7 @@ public class Menu {
         return pilihan;
     }
 
+    //method untuk memasukan alamat dan konfirmasi pembayaran
     public Boolean konfirmasi(String username) {
         System.out.println("+==========+");
         System.out.println("| Checkout |");
@@ -162,15 +169,18 @@ public class Menu {
         }
     }
 
+    //method input scanner
     public String getInput() {
         String data = input.nextLine();
         return data;
     }
 
+    //method tutup input scanner
     public void closeScanner() {
         input.close();
     }
 
+    //method pembuatan struk belanja (file txt)
     public void createReceipt(String pathFile, String username) {
         try {
             List<String> makanan = setQuery.getDetailOrder("nama_makanan", username);
@@ -178,11 +188,11 @@ public class Menu {
             List<String> subTotal = setQuery.getDetailOrder("subtotal", username);
             int total = 0, totalJumlah = 0;
 
-            File file = new File(pathFile);
+            File file = new File(pathFile);     //membuat file
             if (file.createNewFile()) {
                 System.out.println("Struk belanja berhasil dicetak");
             }
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(file);       //deklarasi FileWriter dan BufferedWriter
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("=====================================\n");
             bufferedWriter.write("BinarFud\n");
@@ -193,12 +203,12 @@ public class Menu {
 
             for (int i = 0; i < makanan.size(); i++) {
                 String  tabText = "\t";
-                if (makanan.get(i).length() < 4){
+                if (makanan.get(i).length() < 4){           //untuk merapikan list menu agar sejajar
                     tabText = "\t\t\t";
                 } if (makanan.get(i).length() < 8) {
                     tabText = "\t\t";
                 }
-                String text = makanan.get(i)+tabText+jumlah.get(i)+"\t";
+                String text = makanan.get(i)+tabText+jumlah.get(i)+"\t";        //print menu di file txt
                 bufferedWriter.write(text);
                 text = "Rp "+String.format("%,d",Integer.parseInt(subTotal.get(i))).replace(",",".");
                 bufferedWriter.write(text);
